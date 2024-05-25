@@ -99,7 +99,7 @@ def download():
   wait_time = 15
   json_string = find_and_extract_hrefs(target_url, wait_time, data)
   # Print or use the JSON string as needed
-  if json_string:
+  if data:
     print(json_string);
     print("-----------------------------------")
     return jsonify({
