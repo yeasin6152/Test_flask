@@ -1,3 +1,7 @@
-selenium
 flask
 requests
+selenium==4.20.0
+pytest
+trio
+pytest-trio
+flake8
