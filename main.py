@@ -55,6 +55,21 @@ if __name__ == "__main__":
 """
 import uvicorn
 from flask_app import app  # Import your Flask application
+async def app(scope, receive, send):
+    # Set the response status and headers
+    await send({
+        'type': 'http.response.start',
+        'status': 200,  # Change this to the appropriate status code
+        'headers': [
+            (b'content-type', b'text/plain'),  # Example header
+        ],
+    })
 
+    # Optionally, send response body
+    await send({
+        'type': 'http.response.body',
+        'body': b'Hello, world!',  # Example response body
+    })
+    
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
