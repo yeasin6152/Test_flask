@@ -53,8 +53,23 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000)  # Change host and port as needed
 """
+from selenium import webdriver
+from flask import Flask, request
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
 from flask_app import app  # Import your Flask application
-
+def download_selenium():
+    chrome_option = webdriver.ChromeOption()
+    chrome_option.add_argument("--headless")
+    chrome_option.add_argument("--no-sandbox")
+    chrome_option.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Chome(service=Service(ChromeDriverManager().install()), option=chrome_option)
+    driver.get("https://google.com")
+    title = driver.title
+    language=driver.find_element(By.XPATH, "//div[@id='SIvCob']").text
+    data = { 'page title': title, 'language': language}
+    return data
 async def app(scope, receive, send):
     # Access the Flask application instance
     flask_app = scope.get('app')
@@ -74,7 +89,7 @@ async def app(scope, receive, send):
         })
         await send({
             'type': 'http.response.body',
-            'body': b'Hello, world!',  # Example response body (can be removed)
+            'body': download_selenium(),  # Example response body (can be removed)
         })
 
 if __name__ == "__main__":
