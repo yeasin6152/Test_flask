@@ -80,8 +80,8 @@ def download():
       print("-----------------------------------")
       #return jsonify({"message": "Invalid response from TeraBox downloader"}), 500
 
-  encoded_string = quote(ulink);
-  target_url = "https://teradownloader.com/download?link=" + encoded_string # Replace with your actual URL
+  
+  target_url = "https://teradownloader.com/download?link=" + ulink # Replace with your actual URL
   wait_time = 15
   json_string = find_and_extract_hrefs(target_url, wait_time, data)
   # Print or use the JSON string as needed
