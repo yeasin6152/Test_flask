@@ -29,14 +29,7 @@ def home():
         # Handle POST requests
         return "This is a POST request"
 
-@app.route('/data', methods=['PUT', 'DELETE'])
-def handle_data():
-    # Handle PUT and DELETE requests for data
-    if request.method == 'PUT':
-        # ...
-    elif request.method == 'DELETE':
-        # ...
-        
+
 
 
 
