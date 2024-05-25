@@ -1,3 +1,3 @@
 selenium==4.6.0
-wedriver_manager==3.8.4
+webdriver_manager>=3.8.0,<3.9.0
 flask-resful==0.3.9
