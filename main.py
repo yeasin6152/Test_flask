@@ -6,6 +6,22 @@ from selenium.webdriver.common.by import By
 
 
 app = Flask(__name__)
+async def app(scope, receive, send):
+    # Set the response status and headers
+    await send({
+        'type': 'http.response.start',
+        'status': 200,  # Change this to the appropriate status code
+        'headers': [
+            (b'content-type', b'text/plain'),  # Example header
+        ],
+    })
+
+    # Optionally, send response body
+    await send({
+        'type': 'http.response.body',
+        'body': b'Hello, world!',  # Example response body
+    })
+
 
 def download_selenium():
     chrome_option = webdriver.ChromeOption()
@@ -34,4 +50,6 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, Port=3000)
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)  # Change host and port as needed
+    
