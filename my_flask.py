@@ -3,7 +3,9 @@ from urllib.parse import quote
 from flask import Flask, jsonify, request
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
+from selenium.common.exceptions import SessionNotCreatedException
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import ChromeOptions
 
 app = Flask(__name__)
 
@@ -12,7 +14,11 @@ def hello_world():
   return 'Hello from Flask'
 
 def find_and_extract_hrefs(url, wait_time, data):
-  driver = webdriver.Chrome()
+  options = webdriver.ChromeOptions()
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+  options.add_argument("--headless=new")
+  driver = webdriver.Chrome(options=options)
   try:
     #driver.get(url)
     driver.get("https://www.selenium.dev/selenium/web/web-form.html")
