@@ -1,16 +1,12 @@
-FROM ubuntu 
+FROM python:alpine3.7 
 
-RUN apt-get update 
-RUN apt-get install python3-pip -y
-RUN pip install Flask
-RUN pip install selenium==4.9.1 
-ADD my_flask.py /
-WORKDIR /
+COPY . /app
 
-EXPOSE 5000
+WORKDIR /app
 
-CMD [“python3”,”my_flask.py”]
+RUN pip install -r requirements.txt 
+EXPOSE 5001 
 
+ENTRYPOINT [ "python" ] 
 
-
-
+CMD [ "my_flask.py" ]
