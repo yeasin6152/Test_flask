@@ -2,7 +2,8 @@ from selenium import webdriver
 from flask import Flask, request
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import by
+from selenium.webdriver.common.by import By
+
 
 app = Flask(__name__)
 
