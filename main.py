@@ -1,4 +1,4 @@
-from selenium import webdriver
+"""from selenium import webdriver
 from flask import Flask, request
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -52,4 +52,9 @@ def home():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000)  # Change host and port as needed
-    
+"""
+import uvicorn
+from flask_app import app  # Import your Flask application
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
