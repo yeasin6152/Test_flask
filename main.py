@@ -1,8 +1,8 @@
-form selenium import webdriver
-form flask import Flask, request
-form selenium.webdriver.chrome.service import Service
-form webdriver_manager_chrome import ChromeDriverManager
-form selenium.webdriver.common.by import by
+from selenium import webdriver
+from flask import Flask, request
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager_chrome import ChromeDriverManager
+from selenium.webdriver.common.by import by
 
 app = Flask(__name__)
 
