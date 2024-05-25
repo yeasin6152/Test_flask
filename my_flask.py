@@ -6,6 +6,9 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import SessionNotCreatedException
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import ChromiumOptions
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 app = Flask(__name__)
 
@@ -20,28 +23,32 @@ def find_and_extract_hrefs(url, wait_time, data):
   options.add_argument("--headless=new")
   driver = webdriver.Chrome(options=options)
   try:
-    #driver.get(url)
-    driver.get("https://www.selenium.dev/selenium/web/web-form.html")
-    title = driver.title
+    driver.get(url)
+    wait = WebDriverWait(driver, wait_time)
+    wait.until(EC.presence_of_element_located((By.CLASS_NAME, "p-5")))
     # Wait for the div with class "p-5"
-    driver.implicitly_wait(0.5)
-    text_box = driver.find_element(by = By.NAME, value = "my-text")
-    submit_button = driver.find_element(by = By.CSS_SELECTOR, value = "button")
-    text_box.send_keys("Selenium")
-    submit_button.click()
-    message = driver.find_element(by = By.ID, value = "message")
-    text = message.text
-
-    # wait.until(EC.presence_of_element_located((By.CLASS_NAME, "p-5")))
-    # Find all anchor elements with rel="noopener noreferrer" and href attribute
-
-    return text
-  
+    #driver.implicitly_wait(0.5)
+    anchor_elements = driver.find_elements(By.CSS_SELECTOR, "a[rel='noopener noreferrer'][href]")
+      if anchor_elements:
+        print("Found anchor elements:")
+        for element in anchor_elements:
+          href_link = element.get_attribute("href")
+          if not "play.google.com" in href_link:                
+            data.append(href_link);           
+            #json_data = {"data": data}
+            #json_string = json.dumps(json_data, indent=4)
+            return data
+          else:
+            print("No anchor elements found with rel='noopener noreferrer' and href attribute.")
+  except TimeoutException:
+    print(f"Element (.p-5) not found within {wait_time} seconds.")
   except Exception as e:
     print("An error occurred:", e)
 
   finally:
-    driver.quit()
+    driver.quit();
+    
+
 
 @app.route('/tera/dll', methods = ['GET', 'POST'])
 def download():
