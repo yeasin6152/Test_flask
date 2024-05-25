@@ -56,15 +56,19 @@ if __name__ == "__main__":
 from selenium import webdriver
 from flask import Flask, request
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import ChromeOptions
+
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from flask_app import app  # Import your Flask application
 def download_selenium():
-    chrome_option = webdriver.ChromeOption()
-    chrome_option.add_argument("--headless")
-    chrome_option.add_argument("--no-sandbox")
-    chrome_option.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Chome(service=Service(ChromeDriverManager().install()), option=chrome_option)
+    def download_selenium():
+    chrome_options = ChromeOptions()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    # ... rest of your download_selenium code ..
     driver.get("https://google.com")
     title = driver.title
     language=driver.find_element(By.XPATH, "//div[@id='SIvCob']").text
