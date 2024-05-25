@@ -9,111 +9,122 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello from Flask'
+return 'Hello from Flask'
 
 @app.route('/chess', methods = ['GET'])
 def login():
-    useTo = request.args.get('to')
-    print(useTo)
-    useForm = request.args.get('toform')
-    return jsonify({'data': useTo, 'data1': useForm})
+useTo = request.args.get('to')
+print(useTo)
+useForm = request.args.get('toform')
+return jsonify({
+    'data': useTo, 'data1': useForm
+})
 
 def find_and_extract_hrefs(url, wait_time, data):
-    driver = webdriver.Chrome()
-    try:
-        #driver.get(url)
-	driver.get("https://www.selenium.dev/selenium/web/web-form.html")
-	title = driver.title
-        # Wait for the div with class "p-5"
-        driver.implicitly_wait(0.5)
-	text_box = driver.find_element(by=By.NAME, value="my-text")
-	submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
-	text_box.send_keys("Selenium")
-	submit_button.click()
-	message = driver.find_element(by=By.ID, value="message")
-	text = message.text
-	
-       # wait.until(EC.presence_of_element_located((By.CLASS_NAME, "p-5")))
-        # Find all anchor elements with rel="noopener noreferrer" and href attribute
-        
-        return text
-    except TimeoutException:
-        print(f"Element (.p-5) not found within {wait_time} seconds.")
-    except Exception as e:
-        print("An error occurred:", e)
+driver = webdriver.Chrome()
+try:
+#driver.get(url)
+driver.get("https://www.selenium.dev/selenium/web/web-form.html")
+title = driver.title
+# Wait for the div with class "p-5"
+driver.implicitly_wait(0.5)
+text_box = driver.find_element(by = By.NAME, value = "my-text")
+submit_button = driver.find_element(by = By.CSS_SELECTOR, value = "button")
+text_box.send_keys("Selenium")
+submit_button.click()
+message = driver.find_element(by = By.ID, value = "message")
+text = message.text
 
-    finally:
-        driver.quit()
-        
+# wait.until(EC.presence_of_element_located((By.CLASS_NAME, "p-5")))
+# Find all anchor elements with rel="noopener noreferrer" and href attribute
+
+return text
+except TimeoutException:
+print(f"Element (.p-5) not found within {
+    wait_time
+} seconds.")
+except Exception as e:
+print("An error occurred:", e)
+
+finally:
+driver.quit()
+
 @app.route('/tera/dll', methods = ['GET', 'POST'])
 def download():
-    ulink = request.args.get('link')
-    print(ulink)
-    data = []
-    ses = requests.Session()
-    headers = {
-        'accept': 'application/json, text/plain, */*',
-	    'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8,bn;q=0.7',
-	    'content-type': 'application/json',
-	    'origin': 'https://ytshorts.savetube.me',
-	    'priority': 'u=1, i',
-	    'sec-ch-ua': '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
-	    'sec-ch-ua-mobile': '?0',
-	    'sec-ch-ua-platform': '"Windows"',
-	    'sec-fetch-dest': 'empty',
-	    'sec-fetch-mode': 'cors',
-	    'sec-fetch-site': 'same-origin',
-	    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    }
+ulink = request.args.get('link')
+print(ulink)
+data = []
+ses = requests.Session()
+headers = {
+    'accept': 'application/json, text/plain, */*',
+    'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8,bn;q=0.7',
+    'content-type': 'application/json',
+    'origin': 'https://ytshorts.savetube.me',
+    'priority': 'u=1, i',
+    'sec-ch-ua': '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+}
 
-    json_data = {'url': ulink,}
-    #resp = ses.post('https://ytshorts.savetube.me/api/v1/terabox-downloader',headers = headers,json = json_data).json()["response"]
-    resp = ses.post('https://ytshorts.savetube.me/api/v1/terabox-downloader', headers=headers, json=json_data)
+json_data = {
+    'url': ulink,
+}
+#resp = ses.post('https://ytshorts.savetube.me/api/v1/terabox-downloader',headers = headers,json = json_data).json()["response"]
+resp = ses.post('https://ytshorts.savetube.me/api/v1/terabox-downloader', headers = headers, json = json_data)
 
-    # Check for successful response status code (e.g., 200)
-    if resp.status_code == 200:
-        try:
-            # Attempt to parse JSON
-            resp_ = resp.json()["response"]
-            for key in resp_data:
-                print(f"> TITLE : {key['title']}")
-                print("-----------------------------------")
-                videos = key['resolutions']        
-                data.append(videos['HD Video'])      
-        except JSONDecodeError:
-            # Handle JSON parsing error
-            print("-----------------------------------")
-            #return jsonify({"message": "Invalid response from TeraBox downloader"}), 500
+# Check for successful response status code (e.g., 200)
+if resp.status_code == 200:
+try:
+# Attempt to parse JSON
+resp_ = resp.json()["response"]
+for key in resp_data:
+print(f"> TITLE : {
+    key['title']}")
+print("-----------------------------------")
+videos = key['resolutions']
+data.append(videos['HD Video'])
+except JSONDecodeError:
+# Handle JSON parsing error
+print("-----------------------------------")
+#return jsonify({"message": "Invalid response from TeraBox downloader"}), 500
 
-    encoded_string = quote(ulink);
-    target_url = "https://teradownloader.com/download?link=" + encoded_string  # Replace with your actual URL
-    wait_time = 15
-    json_string = find_and_extract_hrefs(target_url, wait_time, data)
-    # Print or use the JSON string as needed
-    if json_string:
-        print(json_string);
-        print("-----------------------------------")
-        return jsonify({"data": json_string})
-    else:
-        return jsonify({"message": "No links found"}), 404  # Return a 404 Not Found status code if no links are found
+encoded_string = quote(ulink);
+target_url = "https://teradownloader.com/download?link=" + encoded_string # Replace with your actual URL
+wait_time = 15
+json_string = find_and_extract_hrefs(target_url, wait_time, data)
+# Print or use the JSON string as needed
+if json_string:
+print(json_string);
+print("-----------------------------------")
+return jsonify({
+    "data": json_string
+})
+else :
+return jsonify({
+    "message": "No links found"
+}), 404 # Return a 404 Not Found status code if no links are found
 def remove_brackets_quotes(text):
-    chars_to_remove = set('[]')
-    return ''.join(char for char in text if char not in chars_to_remove)
+chars_to_remove = set('[]')
+return ''.join(char for char in text if char not in chars_to_remove)
 
 @app.route('/weather', methods = ['GET'])
 def weather():
-    data = [];
-    #data.append(href_link);    
-    name = request.args.get('name');
-    encoded_string = quote(name);
-    url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + encoded_string + "?unitGroup=metric&include=current&key=H9JFMXALY254PY6ESMK98Y2AQ&contentType=json"
-    print(url)
-    response = requests.get(url)
-    if response.status_code!=200:
-        print('Unexpected Status code: ', response.status_code)
-    else:
-        weather_data = response.json()        
-        return jsonify(weather_data)
-    
+data = [];
+#data.append(href_link);
+name = request.args.get('name');
+encoded_string = quote(name);
+url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + encoded_string + "?unitGroup=metric&include=current&key=H9JFMXALY254PY6ESMK98Y2AQ&contentType=json"
+print(url)
+response = requests.get(url)
+if response.status_code != 200:
+print('Unexpected Status code: ', response.status_code)
+else :
+weather_data = response.json()
+return jsonify(weather_data)
+
 if __name__ == '__main__':
-        app.run(host ='0.0.0.0', port = 5001, debug = True) 
+app.run(host = '0.0.0.0', port = 5001, debug = True)
