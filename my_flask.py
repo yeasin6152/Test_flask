@@ -35,7 +35,7 @@ def find_and_extract_hrefs(url, wait_time, data):
         href_link = element.get_attribute("href")
         if not "play.google.com" in href_link:
           print("ok")
-          #data.append(href_link);           
+          data.append(href_link);           
           #json_data = {"data": data}
           #json_string = json.dumps(json_data, indent=4)
       return data
