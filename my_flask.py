@@ -30,15 +30,12 @@ def find_and_extract_hrefs(url, wait_time, data):
     # Find all anchor elements with rel="noopener noreferrer" and href attribute
 
     return text
-  except TimeoutException:
-    print(f"Element (.p-5) not found within {
-      wait_time
-    } seconds.")
-except Exception as e:
-  print("An error occurred:", e)
+  
+  except Exception as e:
+    print("An error occurred:", e)
 
-finally:
-  driver.quit()
+  finally:
+    driver.quit()
 
 @app.route('/tera/dll', methods = ['GET', 'POST'])
 def download():
