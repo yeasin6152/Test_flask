@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import SessionNotCreatedException
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import ChromeOptions
+from selenium.webdriver.chrome.options import ChromiumOptions
 
 app = Flask(__name__)
 
