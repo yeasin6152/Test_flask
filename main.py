@@ -20,10 +20,23 @@ def download_selenium():
     return data
     
 
-@app.route('/', method = [ 'GET', 'POST'])
+@app.route('/')
 def home():
-    if (request.method == 'GET'):
-        return download_selenium()
+    if request.method == 'GET':
+        # Handle GET requests
+        return "This is a GET request"
+    elif request.method == 'POST':
+        # Handle POST requests
+        return "This is a POST request"
+
+@app.route('/data', methods=['PUT', 'DELETE'])
+def handle_data():
+    # Handle PUT and DELETE requests for data
+    if request.method == 'PUT':
+        # ...
+    elif request.method == 'DELETE':
+        # ...
+        
 
 
 
