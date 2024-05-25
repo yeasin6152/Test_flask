@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 import json
 
 
+
 app = Flask(__name__)
 
 
@@ -18,5 +19,13 @@ def download_data():
 
 
 def download_selenium():
-    # ... your existing download_selenium function code ...
-    return data  # Return the downloaded data dictionary
+    chrome_option = webdriver.ChromeOption()
+    chrome_option.add_argument("--headless")
+    chrome_option.add_argument("--no-sandbox")
+    chrome_option.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Chome(service=Service(ChromeDriverManager().install()), option=chrome_option)
+    driver.get("https://google.com")
+    title = driver.title
+    language=driver.find_element(By.XPATH, "//div[@id='SIvCob']").text
+    data = { 'page title': title, 'language': language}
+    return data
