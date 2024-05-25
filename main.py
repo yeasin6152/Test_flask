@@ -62,7 +62,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from flask_app import app  # Import your Flask application
 def download_selenium():
-    def download_selenium():
     chrome_options = ChromeOptions()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
