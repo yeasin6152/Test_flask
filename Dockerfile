@@ -1,10 +1,15 @@
 ARG PORT=443
 FROM cypress/browsers:latest
-RUN apt-get install python3 -y
-RUN echo $(python3 -m site --user-base)
-COPY requirements.txt .
-ENV PATH /home/root/.local/bin:${PATH}
-RUN apt-get update && apt-get install -y python3-pip && pip install -r requirements.txt && pip install Flask-RESTful
-RUN pip install uvicorn
+WORKDIR /app
+RUN apt-get install python3 -y && apt-get install chromium-browser -y
+COPY ./requirements.txt /app
+RUN apt-get update && apt-get install -y python3-pip && pip install -r requirements.txt
 COPY . .
-CMD uvicorn main:app --host 0.0.0.0 --port $PORT
+EXPOSE 5000
+ENV FLASK_APP=my_flask.py
+CMD ["flask", "run", "--host", "0.0.0.0"]
+
+
+
+
+
