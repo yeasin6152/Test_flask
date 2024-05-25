@@ -57,24 +57,24 @@ from flask_app import app  # Import your Flask application
 
 async def app(scope, receive, send):
     # Access the Flask application instance
-    flask_app = scope.get('app')  # Retrieve the Flask app from the ASGI scope
+    flask_app = scope.get('app')
 
     if flask_app is not None:
         # Defer to Flask app for request handling if available
         response = flask_app.dispatch(scope)
         await send(response)
     else:
-        # Fallback behavior if Flask app not found (e.g., static route)
+        # Fallback behavior (can be left empty in this case)
         await send({
             'type': 'http.response.start',
-            'status': 200,  # Change this to the appropriate status code
+            'status': 200,  # Change if needed
             'headers': [
                 (b'content-type', b'text/plain'),  # Example header
             ],
         })
         await send({
             'type': 'http.response.body',
-            'body': b'Hello, world!',  # Example response body
+            'body': b'Hello, world!',  # Example response body (can be removed)
         })
 
 if __name__ == "__main__":
