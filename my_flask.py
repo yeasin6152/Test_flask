@@ -29,17 +29,17 @@ def find_and_extract_hrefs(url, wait_time, data):
     # Wait for the div with class "p-5"
     #driver.implicitly_wait(0.5)
     anchor_elements = driver.find_elements(By.CSS_SELECTOR, "a[rel='noopener noreferrer'][href]")
-      if anchor_elements:
-        print("Found anchor elements:")
-        for element in anchor_elements:
-          href_link = element.get_attribute("href")
-          if not "play.google.com" in href_link:                
-            data.append(href_link);           
-            #json_data = {"data": data}
-            #json_string = json.dumps(json_data, indent=4)
-            return data
-          else:
-            print("No anchor elements found with rel='noopener noreferrer' and href attribute.")
+    if anchor_elements:
+      print("Found anchor elements:")
+      for element in anchor_elements:
+        href_link = element.get_attribute("href")
+        if not "play.google.com" in href_link:                
+          data.append(href_link);           
+          #json_data = {"data": data}
+          #json_string = json.dumps(json_data, indent=4)
+          return data
+    else:
+      print("No anchor elements found with rel='noopener noreferrer' and href attribute.")
   except TimeoutException:
     print(f"Element (.p-5) not found within {wait_time} seconds.")
   except Exception as e:
