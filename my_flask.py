@@ -3,9 +3,8 @@ from urllib.parse import quote
 from flask import Flask, jsonify, request
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -20,16 +19,12 @@ def login():
     return jsonify({'data': useTo, 'data1': useForm})
 
 def find_and_extract_hrefs(url, wait_time, data):
-    options = webdriver.ChromeOptions()
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--headless=new")
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome()
     try:
         driver.get(url)
         # Wait for the div with class "p-5"
-        wait = WebDriverWait(driver, wait_time)
-        wait.until(EC.presence_of_element_located((By.CLASS_NAME, "p-5")))
+        wait = driver.implicitly_wait(10)
+       # wait.until(EC.presence_of_element_located((By.CLASS_NAME, "p-5")))
         # Find all anchor elements with rel="noopener noreferrer" and href attribute
         anchor_elements = driver.find_elements(By.CSS_SELECTOR, "a[rel='noopener noreferrer'][href]")
         if anchor_elements:
@@ -54,7 +49,7 @@ def find_and_extract_hrefs(url, wait_time, data):
 @app.route('/tera/dll', methods = ['GET', 'POST'])
 def download():
     ulink = request.args.get('link')
-    #print(ulink)
+    print(ulink)
     data = []
     ses = requests.Session()
     headers = {
@@ -82,7 +77,7 @@ def download():
             # Attempt to parse JSON
             resp_ = resp.json()["response"]
             for key in resp_data:
-                #print(f"> TITLE : {key['title']}")
+                print(f"> TITLE : {key['title']}")
                 print("-----------------------------------")
                 videos = key['resolutions']        
                 data.append(videos['HD Video'])      
