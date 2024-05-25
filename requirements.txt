@@ -5,3 +5,4 @@ pytest
 trio
 pytest-trio
 flake8
+webdriver_manager
