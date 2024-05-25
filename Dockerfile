@@ -1,12 +1,10 @@
-FROM python:alpine3.7 
+FROM python:3
 
-COPY . /app
+WORKDIR /usr/src/app
 
-WORKDIR /app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install -r requirements.txt 
-EXPOSE 5001 
-
-ENTRYPOINT [ "python" ] 
-
-CMD [ "my_flask.py" ]
+COPY . .
+EXPOSE 5001
+CMD [ "python", "./my_flask.py" ]
