@@ -37,7 +37,7 @@ def find_and_extract_hrefs(url, wait_time, data):
           data.append(href_link);           
           #json_data = {"data": data}
           #json_string = json.dumps(json_data, indent=4)
-          return data
+      return data
     else:
       print("No anchor elements found with rel='noopener noreferrer' and href attribute.")
   except TimeoutException:
