@@ -9,6 +9,8 @@ from selenium.webdriver.chrome.options import ChromiumOptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+import logging
+from dalle3 import Dalle
 
 app = Flask(__name__)
 
@@ -114,6 +116,16 @@ def remove_brackets_quotes(text):
   return ''.join(char for char in text if char not in chars_to_remove)
 
 
+@app.route('/bing/image', methods = ['GET', 'POST'])
+def downloadBing():
+  prompt = request.args.get('prompt')
+  cookie = ""
+  logging.basicConfig(level=logging.INFO)
+  dalle = Dalle(cookie)
+  dalle.create(prompt)
+  urls = dalle.get_urls()
+  #dalle.download(urls, "images/")
+  print(urls);
 
 if __name__ == '__main__':
   app.run(host = '0.0.0.0', port = 5001, debug = True)
