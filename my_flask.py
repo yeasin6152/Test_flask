@@ -114,14 +114,12 @@ def remove_brackets_quotes(text):
   chars_to_remove = set('[]')
   return ''.join(char for char in text if char not in chars_to_remove)
 
-@app.route('/dalle', methods = ['GET', 'POST'])
+@app.route('/dalle', methods = ['GET'])
 def dalle():
     prompt = request.args.get('prompt');
     urls = []
-    cookie_value = request.args.get('cookie');
     email = request.args.get('email');
-    pass_word = request.args.get('pass');
-    cookie = {"name": "_U", "value": cookie_value}
+    pass_word = request.args.get('pass');   
     options = webdriver.ChromeOptions()
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
@@ -156,6 +154,8 @@ def dalle():
             img = div.find_element(By.TAG_NAME, "img")
             src = img.get_attribute("src")
             urls.append(src)
+
+        # Add explicit return statement for success case
         if urls:
             return jsonify({"data": urls})
     except TimeoutException:
