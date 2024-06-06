@@ -10,7 +10,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import logging
-from dalle3 import Dalle
 
 app = Flask(__name__)
 
@@ -115,17 +114,31 @@ def remove_brackets_quotes(text):
   chars_to_remove = set('[]')
   return ''.join(char for char in text if char not in chars_to_remove)
 
+@app.route('/dalle', methods = ['GET'])
+def dalle():
+    prompt = request.args.get('prompt');
+    cookie_value = request.args.get('cookie');
+    cookie = {"name": "_U", "value": cookie_value}
+    options = webdriver.ChromeOptions()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options=options)
+    try:
+        driver.get(f"https://www.bing.com/images/create?q={prompt}")
+        driver.add_cookie(cookie)
+        driver.refresh()
+        driver.save_screenshot("./screenshot.png")
+        print("Please check screenshot image")
+    except TimeoutException:
+        print(f"Element (.p-5) not found within seconds.")
+    except Exception as e:
+        print("An error occurred:", e)
 
-@app.route('/bing/image', methods = ['GET', 'POST'])
-def downloadBing():
-  prompt = request.args.get('prompt')
-  cookie = ""
-  logging.basicConfig(level=logging.INFO)
-  dalle = Dalle(cookie)
-  dalle.create(prompt)
-  urls = dalle.get_urls()
-  #dalle.download(urls, "images/")
-  print(urls);
+    finally:
+        driver.quit()
+    
+
 
 if __name__ == '__main__':
   app.run(host = '0.0.0.0', port = 5001, debug = True)
