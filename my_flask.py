@@ -130,7 +130,7 @@ def dalle():
         driver.refresh()
         driver.save_screenshot("./screenshot.png")
         print("Please check screenshot image")
-        return 'ok'
+        return jsonify('ok')
     except TimeoutException:
         print(f"Element (.p-5) not found within seconds.")
     except Exception as e:
