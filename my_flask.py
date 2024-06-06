@@ -114,10 +114,13 @@ def remove_brackets_quotes(text):
   chars_to_remove = set('[]')
   return ''.join(char for char in text if char not in chars_to_remove)
 
-@app.route('/dalle', methods = ['GET'])
+@app.route('/dalle', methods = ['GET', 'POST'])
 def dalle():
     prompt = request.args.get('prompt');
+    urls = []
     cookie_value = request.args.get('cookie');
+    email = request.args.get('email');
+    pass_word = request.args.get('pass');
     cookie = {"name": "_U", "value": cookie_value}
     options = webdriver.ChromeOptions()
     options.add_argument("--no-sandbox")
@@ -125,12 +128,36 @@ def dalle():
     options.add_argument("--headless=new")
     driver = webdriver.Chrome(options=options)
     try:
-        driver.get(f"https://www.bing.com/images/create?q={prompt}")
-        driver.add_cookie(cookie)
-        driver.refresh()
-        driver.save_screenshot("./screenshot.png")
-        print("Please check screenshot image")
-        return jsonify('ok')
+        driver.get("https://www.bing.com/images/create?")
+        WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.ID, "create_btn_c")))
+        join_btn = driver.find_element(By.ID, "create_btn_c")
+        join_btn.click()
+        time.sleep(3)
+
+        WebDriverWait(driver, 60).until(EC.presence_of_all_elements_located((By.ID, "i0116")))
+        userName = driver.find_element(By.ID, "i0116")
+        userName.send_keys(email + Keys.ENTER)
+        time.sleep(3)
+        WebDriverWait(driver, 60).until(EC.presence_of_all_elements_located((By.ID, "i0118")))
+        passWord = driver.find_element(By.ID, "i0118")
+        passWord.send_keys(pass_word + Keys.ENTER)
+        time.sleep(3)
+        WebDriverWait(driver, 60).until(EC.presence_of_all_elements_located((By.ID, "idSIButton9")))
+        yes = driver.find_element(By.ID, "idSIButton9")
+        yes.click()
+
+        WebDriverWait(driver, 60).until(EC.presence_of_all_elements_located((By.ID, "sb_form_q")))
+        input = driver.find_element(By.ID, "sb_form_q")
+        input.send_keys(prompt + Keys.ENTER)
+
+        WebDriverWait(driver, 60).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "img_cont")))
+        divs = driver.find_elements(By.CLASS_NAME, "img_cont")
+        for div in divs:
+            img = div.find_element(By.TAG_NAME, "img")
+            src = img.get_attribute("src")
+            urls.append(src)
+        if urls:
+            return jsonify({"data": urls})
     except TimeoutException:
         print(f"Element (.p-5) not found within seconds.")
     except Exception as e:
