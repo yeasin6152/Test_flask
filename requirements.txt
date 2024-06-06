@@ -6,4 +6,3 @@ trio
 pytest-trio
 flake8
 webdriver_manager
-dalle3
