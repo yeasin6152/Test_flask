@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 import logging
 import subprocess
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 import urllib.request
 import yt_dlp
 
