@@ -152,6 +152,27 @@ def youtube():
     finally:
         driver.quit()
 
+def update_yt_dlp():
+    try:
+        # Check current version
+        result = subprocess.run(['yt-dlp', '--version'], capture_output=True, text=True)
+        current_version = result.stdout.strip()
+        print(f"Current yt-dlp version: {current_version}")
+
+        # Get the latest version from PyPI
+        result_pypi = subprocess.run(['pip', 'install', '--upgrade', 'yt-dlp'], capture_output=True, text=True)
+        if 'Successfully installed' in result_pypi.stdout:
+            print(f"yt-dlp updated to the latest version.")
+        else:
+            print("No updates available for yt-dlp.")
+
+        return True  # Return True if update succeeds
+
+    except Exception as update_error:
+        print(f"Update Error: {update_error}")
+        return False
+
+
 @app.route('/allLink', methods = ['GET'])
 def allLink():
     print("\n<=====> allLink response <=====>\n")
