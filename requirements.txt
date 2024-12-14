@@ -7,3 +7,4 @@ pytest-trio
 flake8
 webdriver_manager
 yt-dlp
+validators
